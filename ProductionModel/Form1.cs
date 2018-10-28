@@ -47,7 +47,7 @@ namespace ProductionModel
             for(int i = 1; i < countKnowledge + 1; ++i)
             {
                 st = lines[i].Split(new char[] { ':', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                facts.Add(st[0], new Fact(st[0], Int32.Parse(st[1]), st[2]));
+                facts.Add(st[0], new Fact(st[0], st[1]));
             }
 
             st = lines[countKnowledge + 1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
@@ -140,10 +140,9 @@ namespace ProductionModel
 
         public Fact() { }
 
-        public Fact(string _id, double _weight, string _text)
+        public Fact(string _id, string _text)
         {
             id = _id;
-            weight = _weight;
             text = _text;
         }
 
