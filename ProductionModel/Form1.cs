@@ -12,9 +12,28 @@ namespace ProductionModel
 {
     public partial class Form1 : Form
     {
+        private List<Fact> init_knowledge= new List<Fact>();
+        private List<TerminalFact> terminals = new List<TerminalFact>();
+        private List<Rule> Rules = new List<Rule>();
+        private List<Fact> work_area = new List<Fact>();
+
         public Form1()
         {
             InitializeComponent();
+    
+            
+        }
+
+        private void reset_controls() {
+            foreach (Control c in flowLayoutPanel1.Controls)
+                c.Dispose();
+            foreach (Fact f in init_knowledge) {
+                FactControl fc = new FactControl();
+                fc.FactText.Text = f.text;
+                fc.father = f;
+                f.cntrl = fc;
+                flowLayoutPanel1.Controls.Add(fc);
+            }
         }
 
         private void parse_file(string filename)
@@ -74,9 +93,35 @@ namespace ProductionModel
 
                 }
                 rules.Add(new Rule(id, list_facts, list_facts2));
+                reset_controls();
+                init_knowledge.Clear();
+                terminals.Clear();
+                Rules.Clear();
+                work_area.Clear();
+                foreach (Fact f in facts.Values) {
+                    init_knowledge.Add(f);
+                }
+                foreach (Rule r in rules)
+                {
+                    Rules.Add(r);
+                }
+                foreach(TerminalFact f in termfacts.Values)
+                {
+                    terminals.Add(f);
+                }
             }
 
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() != DialogResult.OK)
+                return;
+            string filename = openFileDialog1.FileName;
+            if (!System.IO.File.Exists(filename))
+                return;
+            parse_file(filename);
         }
     }
 
@@ -85,6 +130,13 @@ namespace ProductionModel
         public string id;
         public double weight;
         public string text;
+        public FactControl cntrl;
+
+
+        public override string ToString()
+        {
+            return text;
+        }
 
         public Fact() { }
 
@@ -94,11 +146,14 @@ namespace ProductionModel
             weight = _weight;
             text = _text;
         }
+
+
+
     }
 
     public class TerminalFact : Fact
     {
-        string img;
+        public string img;
 
         public TerminalFact() { }
 
