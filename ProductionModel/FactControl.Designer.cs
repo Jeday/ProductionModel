@@ -46,11 +46,11 @@
             // FactValueControl
             // 
             this.FactValueControl.Location = new System.Drawing.Point(3, 26);
-            this.FactValueControl.Maximum = 100;
+            this.FactValueControl.Maximum = 1;
             this.FactValueControl.Name = "FactValueControl";
-            this.FactValueControl.Size = new System.Drawing.Size(383, 45);
+            this.FactValueControl.Size = new System.Drawing.Size(322, 45);
             this.FactValueControl.TabIndex = 1;
-            this.FactValueControl.TickFrequency = 10;
+            this.FactValueControl.TickFrequency = 100;
             // 
             // FactControl
             // 
@@ -59,7 +59,7 @@
             this.Controls.Add(this.FactValueControl);
             this.Controls.Add(this.FactText);
             this.Name = "FactControl";
-            this.Size = new System.Drawing.Size(388, 66);
+            this.Size = new System.Drawing.Size(327, 66);
             ((System.ComponentModel.ISupportInitialize)(this.FactValueControl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

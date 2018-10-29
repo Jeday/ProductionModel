@@ -4,11 +4,11 @@ f2 : Персонаж умеет готовить.
 f3 : Персонаж обучается в школе.
 f4 : У персонажа есть близкие друзья.
 5
-t1 : Гомер Симпсон
-t2 : Мардж Симпсон
-t3 : Барт Симпсон
-t4 : Лиза Симпсон
-t5 : Мэгги Симпсон
+t1 : Гомер Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
+t2 : Мардж Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
+t3 : Барт Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
+t4 : Лиза Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
+t5 : Мэгги Симпсон :  https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
 2
 r1 : f1 : t1
 r2 : f2 : t2
