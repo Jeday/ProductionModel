@@ -43,6 +43,7 @@ namespace ProductionModel
         {
             Dictionary<string, Fact> facts = new Dictionary<string, Fact>();
             Dictionary<string, TerminalFact> termfacts = new Dictionary<string, TerminalFact>();
+            Dictionary<string, Fact> support_facts = new Dictionary<string, Fact>();
             List<Rule> rules = new List<Rule>();
             List<string> lines = System.IO.File.ReadLines(filename, Encoding.GetEncoding(1251)).ToList();
             var st = lines[0].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
@@ -55,15 +56,25 @@ namespace ProductionModel
             }
 
             st = lines[countKnowledge + 1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            int countTfact = Int32.Parse(st[0]);
-            int ind = countKnowledge + countTfact + 2;
+            int countSfact = Int32.Parse(st[0]);
+            int ind = countKnowledge + countSfact + 2;
             for(int i = countKnowledge + 2; i < ind; ++i)
+            {
+                st = lines[i].Split(new char[] { ':', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                support_facts.Add(st[0].Trim(), new Fact(st[0], st[1]));
+            }
+
+            st = lines[ind].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            int countTfact = Int32.Parse(st[0]);
+            ind += 1;
+            for(int i = ind; i < ind + countTfact; ++i)
             {
                 string img_link = lines[i].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).Last();
                 st = lines[i].Split(new char[] { ':', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 termfacts.Add(st[0].Trim(), new TerminalFact(st[0].Trim(), st[1], img_link));
             }
 
+            ind += countTfact;
             st = lines[ind].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             int countRules = Int32.Parse(st[0]);
 
