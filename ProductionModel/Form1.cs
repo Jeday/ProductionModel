@@ -132,8 +132,25 @@ namespace ProductionModel
             parse_file(filename);
         }
 
+        private FlowLayoutPanel panel_factory() {
+            FlowLayoutPanel panel = new FlowLayoutPanel();
+            panel.FlowDirection = FlowDirection.TopDown;
+            panel.BorderStyle = BorderStyle.FixedSingle;
+            panel.AutoScroll = true;
+            panel.AutoSize = true;
+            return panel;
+
+        }
+
+        private Label label_factory() {
+            Label l = new Label();
+            l.AutoSize = true;
+            return l;
+        }
+
 
         private List<TerminalFact> forward() {
+            ThoughtLinePanel.Controls.Clear();
             work_area = new HashSet<Fact>(init_knowledge.Select(x => new Fact(x)));
             List<Rule> applyable = Rules.Where((Rule r) => r.condition.All((Fact r_c) => work_area.Contains(r_c))).ToList();
             List<Rule> used = new List<Rule>() ;
@@ -141,13 +158,75 @@ namespace ProductionModel
 
             while (applyable.Count != 0)
             {
+                FlowLayoutPanel used_facts_panel = panel_factory();
+                FlowLayoutPanel used_rules_panel = panel_factory();
+                FlowLayoutPanel new_facts_panel = panel_factory();
+
+
+
+
+                HashSet<Fact> used_facts = new HashSet<Fact>();
+                HashSet<Fact> new_facts = new HashSet<Fact>();
+
                 foreach (Rule r in applyable)
+                {
+                    foreach (Fact f in r.condition)
+                        used_facts.Add(f);
+
+
                     foreach (Fact f in r.result)
                     {
-                        if (f is TerminalFact)
-                            res.Add(f as TerminalFact);
-                        work_area.Add(f);
+                        if (!work_area.Contains(f)){
+                            new_facts.Add(f);
+                        }
+                        else
+                            work_area.Add(f);
                     }
+                }
+
+                Label txt = label_factory();
+                txt.Text = "Used facts:";
+                used_facts_panel.Controls.Add(txt);
+                foreach(Fact f in used_facts)
+                {
+                    txt = label_factory();
+                    txt.AutoSize = true;
+                    txt.Text = "\t" +f.id+": "+ f.text;
+                    used_facts_panel.Controls.Add(txt);
+
+                }
+                ThoughtLinePanel.Controls.Add(used_facts_panel);
+
+                txt = label_factory();
+                txt.Text = "Used rules:";
+                used_rules_panel.Controls.Add(txt);
+                foreach (Rule r in applyable)
+                {
+                    txt = label_factory();
+                    txt.Text = "\t" + r.ToString();
+                    used_rules_panel.Controls.Add(txt);
+
+                }
+                ThoughtLinePanel.Controls.Add(used_rules_panel);
+
+                txt = label_factory();
+                txt.Text = "New facts:";
+                new_facts_panel.Controls.Add(txt);
+                foreach (Fact f in new_facts)
+                {
+                    txt = label_factory();
+                    txt.Text = "\t" + f.id + ": " + f.text;
+                    if(f is TerminalFact)
+                    {
+                        txt.ForeColor = System.Drawing.Color.Green;
+                        res.Add(f as TerminalFact);
+                    }
+                    
+                    new_facts_panel.Controls.Add(txt);
+
+                }
+                ThoughtLinePanel.Controls.Add(new_facts_panel);
+
                 used = used.Union(applyable).ToList();
                 applyable = Rules.Where((Rule r) => r.condition.IsSubsetOf(work_area) && !used.Contains(r)).ToList();
             }
@@ -260,6 +339,11 @@ namespace ProductionModel
                 result.Add(r);
         }
 
+        public override string ToString()
+        {
+            return id + ": " + string.Join(",", condition.Select(f => f.id)) + " -> " + string.Join(",", result.Select(f => f.id));
+        }
+            
 
     }
 }

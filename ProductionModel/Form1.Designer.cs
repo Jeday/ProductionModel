@@ -34,6 +34,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.button2 = new System.Windows.Forms.Button();
+            this.ThoughtLinePanel = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,6 +73,8 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(23, 13);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -88,11 +91,22 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // ThoughtLinePanel
+            // 
+            this.ThoughtLinePanel.AutoScroll = true;
+            this.ThoughtLinePanel.BackColor = System.Drawing.Color.White;
+            this.ThoughtLinePanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ThoughtLinePanel.Location = new System.Drawing.Point(12, 450);
+            this.ThoughtLinePanel.Name = "ThoughtLinePanel";
+            this.ThoughtLinePanel.Size = new System.Drawing.Size(969, 178);
+            this.ThoughtLinePanel.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(993, 640);
+            this.Controls.Add(this.ThoughtLinePanel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.button1);
@@ -113,6 +127,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.FlowLayoutPanel ThoughtLinePanel;
     }
 }
 
