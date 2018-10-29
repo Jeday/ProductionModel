@@ -3,6 +3,8 @@ f1 : У персонажа есть постоянная работа.
 f2 : Персонаж умеет готовить.
 f3 : Персонаж обучается в школе.
 f4 : У персонажа есть близкие друзья.
+1
+s1 : Глупый
 5
 t1 : Гомер Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
 t2 : Мардж Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
