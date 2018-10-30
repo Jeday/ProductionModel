@@ -93,6 +93,8 @@ namespace ProductionModel
                         list_facts.Add(facts[index]);
                     else if (termfacts.ContainsKey(index))
                         list_facts.Add(termfacts[index]);
+                    else if (support_facts.ContainsKey(index))
+                        list_facts.Add(support_facts[index]);
                     // кинуть экспешн, если не найдено вообще
 
                 }
@@ -106,6 +108,8 @@ namespace ProductionModel
                         list_facts2.Add(facts[index]);
                     else if (termfacts.ContainsKey(index))
                         list_facts2.Add(termfacts[index]);
+                    else if (support_facts.ContainsKey(index))
+                        list_facts2.Add(support_facts[index]);
                     // кинуть экспешн, если не найдено вообще
 
                 }
