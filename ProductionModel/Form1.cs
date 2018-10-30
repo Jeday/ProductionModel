@@ -12,12 +12,12 @@ namespace ProductionModel
 {
     public partial class Form1 : Form
     {
-        private List<Fact> init_knowledge= new List<Fact>();
-        private List<Fact> possible_knoweledge = new List<Fact>();
-        private List<TerminalFact> terminals = new List<TerminalFact>();
+        private List<Fact> init_knowledge= new List<Fact>(); // user choosen facts
+        private List<Fact> possible_knoweledge = new List<Fact>(); //all facts that users can change
+        private List<TerminalFact> terminals = new List<TerminalFact>(); // terminal facts
         private List<Rule> Rules = new List<Rule>();
-        private HashSet<Fact> work_area = new HashSet<Fact>();
-
+        private HashSet<Fact> work_area = new HashSet<Fact>(); // proven facts
+        private HashSet<Fact> support_area = new HashSet<Fact>();  // non terminal 
         public Form1()
         {
             InitializeComponent();
@@ -121,6 +121,7 @@ namespace ProductionModel
             terminals.Clear();
             Rules.Clear();
             work_area.Clear();
+            support_area.Clear();
             foreach (Fact f in facts.Values)
             {
                 possible_knoweledge.Add(f);
@@ -132,6 +133,11 @@ namespace ProductionModel
             foreach (TerminalFact f in termfacts.Values)
             {
                 terminals.Add(f);
+            }
+            foreach(Fact f in support_facts.Values)
+            {
+
+                support_area.Add(f);
             }
             reset_controls();
 
@@ -153,6 +159,7 @@ namespace ProductionModel
             panel.BorderStyle = BorderStyle.FixedSingle;
             panel.AutoScroll = true;
             panel.AutoSize = true;
+            panel.WrapContents = true;
             return panel;
 
         }
@@ -193,9 +200,10 @@ namespace ProductionModel
                     {
                         if (!work_area.Contains(f)){
                             new_facts.Add(f);
-                        }
-                        else
                             work_area.Add(f);
+                        }
+                        
+                            
                     }
                 }
 
