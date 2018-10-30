@@ -164,8 +164,10 @@ namespace ProductionModel
 
         }
 
-        private Label label_factory() {
+        private Label label_factory(string text, Color c = new Color()) {
             Label l = new Label();
+            l.Text = text;
+            l.ForeColor = c;
             l.AutoSize = true;
             return l;
         }
@@ -174,84 +176,79 @@ namespace ProductionModel
         private List<TerminalFact> forward() {
             ThoughtLinePanel.Controls.Clear();
             work_area = new HashSet<Fact>(init_knowledge.Select(x => new Fact(x)));
-            List<Rule> applyable = Rules.Where((Rule r) => r.condition.All((Fact r_c) => work_area.Contains(r_c))).ToList();
+            List<Rule> applyable = Rules.Where((Rule r) => r.condition.All((Fact r_c) => work_area.Contains(r_c))).OrderByDescending(r => r.condition.Count).ToList();
             List<Rule> used = new List<Rule>() ;
             List<TerminalFact> res = new List<TerminalFact>();
 
             while (applyable.Count != 0)
             {
+                /// cool design
                 FlowLayoutPanel used_facts_panel = panel_factory();
                 FlowLayoutPanel used_rules_panel = panel_factory();
                 FlowLayoutPanel new_facts_panel = panel_factory();
 
 
 
-
+                /// collect all used facts and all newly proven ones
                 HashSet<Fact> used_facts = new HashSet<Fact>();
                 HashSet<Fact> new_facts = new HashSet<Fact>();
 
+
+                /// other way is to get the BEST applyable rule and only apply it
+
+                /// apply rules  and gather facts all new facts in work_area
                 foreach (Rule r in applyable)
                 {
                     foreach (Fact f in r.condition)
                         used_facts.Add(f);
 
-
                     foreach (Fact f in r.result)
-                    {
                         if (!work_area.Contains(f)){
                             new_facts.Add(f);
                             work_area.Add(f);
-                        }
-                        
-                            
-                    }
+                        }                       
                 }
 
-                Label txt = label_factory();
-                txt.Text = "Used facts:";
-                used_facts_panel.Controls.Add(txt);
+
+                // add panel for used facts
+                used_facts_panel.Controls.Add(label_factory("Used facts:"));
                 foreach(Fact f in used_facts)
-                {
-                    txt = label_factory();
-                    txt.AutoSize = true;
-                    txt.Text = "\t" +f.id+": "+ f.text;
-                    used_facts_panel.Controls.Add(txt);
+                {               
+                    used_facts_panel.Controls.Add(label_factory("\t" + f.id + ": " + f.text));
 
                 }
                 ThoughtLinePanel.Controls.Add(used_facts_panel);
 
-                txt = label_factory();
-                txt.Text = "Used rules:";
-                used_rules_panel.Controls.Add(txt);
+
+                // add panel for used rules
+                used_rules_panel.Controls.Add(label_factory("Used rules:"));
                 foreach (Rule r in applyable)
                 {
-                    txt = label_factory();
-                    txt.Text = "\t" + r.ToString();
-                    used_rules_panel.Controls.Add(txt);
+                    used_rules_panel.Controls.Add(label_factory("\t" + r.ToString()));
 
                 }
                 ThoughtLinePanel.Controls.Add(used_rules_panel);
 
-                txt = label_factory();
-                txt.Text = "New facts:";
-                new_facts_panel.Controls.Add(txt);
+                // add panel for new facts
+                new_facts_panel.Controls.Add(label_factory("New facts:"));
                 foreach (Fact f in new_facts)
                 {
-                    txt = label_factory();
-                    txt.Text = "\t" + f.id + ": " + f.text;
+                    Label txt = label_factory("\t" + f.id + ": " + f.text);
                     if(f is TerminalFact)
                     {
                         txt.ForeColor = System.Drawing.Color.Green;
                         res.Add(f as TerminalFact);
                     }
-                    
                     new_facts_panel.Controls.Add(txt);
 
                 }
                 ThoughtLinePanel.Controls.Add(new_facts_panel);
 
+
+                // get used rules to all used
                 used = used.Union(applyable).ToList();
-                applyable = Rules.Where((Rule r) => r.condition.IsSubsetOf(work_area) && !used.Contains(r)).ToList();
+                // get new applyable rules and sort by the strongest ones
+                applyable = Rules.Where((Rule r) => r.condition.IsSubsetOf(work_area) && !used.Contains(r)).OrderByDescending(r=>r.condition.Count).ToList();
             }
             return res;
         }
