@@ -159,7 +159,7 @@ namespace ProductionModel
             panel.BorderStyle = BorderStyle.FixedSingle;
             panel.AutoScroll = true;
             panel.AutoSize = true;
-            panel.WrapContents = true;
+            panel.WrapContents = false;
             return panel;
 
         }
@@ -176,12 +176,15 @@ namespace ProductionModel
         private List<TerminalFact> forward() {
             ThoughtLinePanel.Controls.Clear();
             work_area = new HashSet<Fact>(init_knowledge.Select(x => new Fact(x)));
-            List<Rule> applyable = Rules.Where((Rule r) => r.condition.All((Fact r_c) => work_area.Contains(r_c))).OrderByDescending(r => r.condition.Count).ToList();
-            List<Rule> used = new List<Rule>() ;
+            List<Rule> applyable = Rules.Where((Rule r) => r.condition.All((Fact r_c) => work_area.Contains(r_c))).ToList();
+            HashSet<Rule> used = new HashSet<Rule>() ;
             List<TerminalFact> res = new List<TerminalFact>();
 
+
+            int time = 0;
             while (applyable.Count != 0)
             {
+                time++;
                 /// cool design
                 FlowLayoutPanel used_facts_panel = panel_factory();
                 FlowLayoutPanel used_rules_panel = panel_factory();
@@ -194,39 +197,43 @@ namespace ProductionModel
                 HashSet<Fact> new_facts = new HashSet<Fact>();
 
 
-                /// other way is to get the BEST applyable rule and only apply it
 
-                /// apply rules  and gather facts all new facts in work_area
-                foreach (Rule r in applyable)
-                {
-                    foreach (Fact f in r.condition)
+
+                ///get the BEST applyable rule and only apply it
+                applyable = applyable
+                    .OrderByDescending(r=>r.result.Count(f => f is TerminalFact)) // fist priority getting terminals
+                    .ThenBy(r => r.result.Intersect(work_area).Count()) //  getting new facts
+                    .ThenByDescending(r => (double)r.condition.Sum(f => f.time) / r.condition.Count()) // using newer facts
+                    .ThenByDescending(r => r.condition.Count) // using  more specific condition                              
+                    .ToList();
+                Rule best_rule = applyable.First();
+
+
+                    foreach (Fact f in best_rule.condition)
                         used_facts.Add(f);
 
-                    foreach (Fact f in r.result)
+                    foreach (Fact f in best_rule.result)
                         if (!work_area.Contains(f)){
                             new_facts.Add(f);
+                            f.time = time;
                             work_area.Add(f);
                         }                       
-                }
+                
 
 
                 // add panel for used facts
-                used_facts_panel.Controls.Add(label_factory("Used facts:"));
-                foreach(Fact f in used_facts)
-                {               
-                    used_facts_panel.Controls.Add(label_factory("\t" + f.id + ": " + f.text));
-
-                }
+                used_facts_panel.Controls.Add(label_factory("Applyable facts:"));
+                foreach(Rule r in applyable)
+                foreach (Fact f in r.condition)          
+                    used_facts_panel.Controls.Add(label_factory("\t" + f.id + ": " + f.text, best_rule.condition.Contains(f) ? Color.Green : Color.Black));
                 ThoughtLinePanel.Controls.Add(used_facts_panel);
 
 
                 // add panel for used rules
-                used_rules_panel.Controls.Add(label_factory("Used rules:"));
+                used_rules_panel.Controls.Add(label_factory("Active rules:"));
                 foreach (Rule r in applyable)
-                {
-                    used_rules_panel.Controls.Add(label_factory("\t" + r.ToString()));
+                    used_rules_panel.Controls.Add(label_factory("\t" + r.ToString(),r == best_rule ? Color.Green : Color.Black ));
 
-                }
                 ThoughtLinePanel.Controls.Add(used_rules_panel);
 
                 // add panel for new facts
@@ -236,7 +243,7 @@ namespace ProductionModel
                     Label txt = label_factory("\t" + f.id + ": " + f.text);
                     if(f is TerminalFact)
                     {
-                        txt.ForeColor = System.Drawing.Color.Green;
+                        txt.ForeColor = System.Drawing.Color.Red;
                         res.Add(f as TerminalFact);
                     }
                     new_facts_panel.Controls.Add(txt);
@@ -246,9 +253,12 @@ namespace ProductionModel
 
 
                 // get used rules to all used
-                used = used.Union(applyable).ToList();
+                used.Add(best_rule);
                 // get new applyable rules and sort by the strongest ones
-                applyable = Rules.Where((Rule r) => r.condition.IsSubsetOf(work_area) && !used.Contains(r)).OrderByDescending(r=>r.condition.Count).ToList();
+                applyable = Rules.Where((Rule r) => r.condition.IsSubsetOf(work_area) && !used.Contains(r)).ToList();
+
+                if (res.Count > 0)
+                    break;
             }
             return res;
         }
@@ -270,6 +280,8 @@ namespace ProductionModel
             }
             pictureBox1.Refresh();
         }
+
+ 
     }
 
     public class Fact
@@ -278,7 +290,7 @@ namespace ProductionModel
         public double weight = 1;
         public string text;
         public FactControl cntrl;
-
+        public int time = 0;
 
         public Fact(Fact f) {
             id = f.id;
@@ -314,7 +326,7 @@ namespace ProductionModel
 
         public override int GetHashCode()
         {
-            return this.id.GetHashCode();
+            return id.GetHashCode();
         }
 
     }
