@@ -1,33 +1,89 @@
-7
-f1 : Персонаж женщина.
-f2 : Персонаж всегда готов помочь другим.
-f3 : Персонаж влюблён.
-f4 : У персонажа есть друзья, с которыми он часто встречается.
-f5 : У персонажа есть сестра.
-f6 : Персонаж часто попадает в неприятности.
-f7 : Персонаж имеет постоянное хобби.
-5
-s1 : Любит выпить.
-s2 : Хорошо готовит.
-s3 : Хулиган.
-s4 : Любит учиться.
-s5 : Молчаливый.
-5
+17
+f1 : Смотрит на всех свысока. 
+f2 : Проблемы в семье. 
+f4 : Отталкивающий человек. 
+f6 : Часто попадает в неприятности. 
+f7 : Имеет постоянное хобби. 
+f8 : Есть дети. 
+f9 : Делает вид, что понимает, чем занимается. 
+f10 : Любит свою семью. 
+f11 : Любит проводить время на кухне. 
+f12 : Не заботиться о своём здоровье. 
+f13 : Готов поверить в любую чушь. 
+f14 : Смеется над людьми. 
+f15 : Возраст меньше 18 лет. 
+f16 : Любит читать. 
+f17 : Часто выходит из дома. 
+f18 : Не часто выходит из дома. 
+f19 : Возраст старше 18 лет. 
+22
+s1 : Любит покушать. 
+s2 : Хорошо готовит. 
+s3 : Задира. 
+s4 : Любит учиться. 
+s6 : Тупой. 
+s7 : Работает. 
+s8 : Влюблённый. 
+s9 : Простак. 
+s10 : Родитель. 
+s11 : Отличница. 
+s12 : Имеет вредные привычки. 
+s13 : Любит выпить. 
+s14 : Доверчив. 
+s15 : Попадает под влияние других людей. 
+s16 : Плохое зрение. 
+s17 : Школьник. 
+s18 : Домохозяйка. 
+s19 : Курит. 
+s20 : Слаборазвитый. 
+s21 : Старик. 
+s22 : Богатый. 
+s23 : Плохой родитель. 
+10
 t1 : Гомер Симпсон : http://mysimpsons.ru/sites/default/files/character/homer-simpson.jpg
 t2 : Мардж Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
 t3 : Барт Симпсон : http://www.simpsons-art.ru/personas/bart.png
 t4 : Лиза Симпсон : http://mysimpsons.ru/sites/default/files/character/lisa-simpson_6k3ml.jpg
 t5 : Мэгги Симпсон : https://vignette.wikia.nocookie.net/simpsons/images/8/8b/Maggie.jpg/revision/latest?cb=20140522121724&path-prefix=ru
-12
-r1 : f1 : s2, s4, s5
-r2 : f2 : s2, s4
-r3 : f3 : s1, s2
-r4 : f4 : s1, s3
-r5 : f5 : s2, s3, s4, s5
-r6 : f6 : s1, s3
-r7 : f7 : s2, s4
-r8 : s1 : t1
-r9 : s2 : t2
-r10 : s3 : t3
-r11 : s4 : t4
-r12 : s5 : t5
+t6 : Абрахам Симпсон : https://vignette.wikia.nocookie.net/simpsons/images/c/c5/Abraham_Simpson_-_shading.png/revision/latest?cb=20150522162044&path-prefix=ru
+t7 : Пэтти Бувье : https://vignette.wikia.nocookie.net/simpsons/images/5/53/Patty.png/revision/latest/scale-to-width-down/185?cb=20140823090359&path-prefix=ru
+t8 : Милхаус Ван Хутен : https://vignette.wikia.nocookie.net/simpsons/images/9/91/Milhouse_Van_Houten_2.png/revision/latest?cb=20180429212659
+t9 : Нельсон Манц : https://citaty.info/files/characters/69883.gif
+t10 : Чарльз Монтгомери Бёрнс :http://www.simpsons-art.ru/personas/atom_1.jpg
+36
+f17, f19 : s7
+f9 : s6
+f10 : s8
+f11, f12 : s1
+f8 : s10   
+s6, s8 : s9
+f12 : s12
+f6, s12 : s13
+s1, s7, s9, s10, s13: t1
+f6, f13 : s14, s9
+s14, s9 : s15
+f12, f16 : s16
+f15, f17 : s17
+s15, s16, s17 : t8
+f7, f11 : s2
+f18, f19, s2 : s18
+s2, s8, s10, s18 : t2
+f4, s12 : s19
+f4, f14 : s3
+s3, s7, s19 : t7
+f14, f6 : s3
+s3, s17 : t3
+f2, s3, s17 : t9
+f2, s8 : s20
+f18, f19 : s21
+f12, s21 : s16
+s10, s16, s21 : t6
+f1, s7 : s22
+f2, s10 : s23
+s3, s23, s22 : t10
+f16, s17 : s4
+f1, s4 : s11
+f7, s8, s11 : t4
+f15, f18 : s20
+f9, f13 : s15
+s15, s20 : t5
