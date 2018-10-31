@@ -176,7 +176,7 @@ namespace ProductionModel
         private List<TerminalFact> forward() {
             ThoughtLinePanel.Controls.Clear();
             work_area = new HashSet<Fact>(init_knowledge.Select(x => new Fact(x)));
-            List<Rule> applyable = Rules.Where((Rule r) => r.condition.All((Fact r_c) => work_area.Contains(r_c))).ToList();
+            List<Rule> applyable = Rules.Where(r=> r.condition.IsSubsetOf(work_area)).ToList();
             HashSet<Rule> used = new HashSet<Rule>() ;
             List<TerminalFact> res = new List<TerminalFact>();
 
@@ -223,8 +223,7 @@ namespace ProductionModel
 
                 // add panel for used facts
                 used_facts_panel.Controls.Add(label_factory("Applyable facts:"));
-                foreach(Rule r in applyable)
-                foreach (Fact f in r.condition)          
+                foreach (Fact f in applyable.SelectMany(r => r.condition).Distinct())          
                     used_facts_panel.Controls.Add(label_factory("\t" + f.id + ": " + f.text, best_rule.condition.Contains(f) ? Color.Green : Color.Black));
                 ThoughtLinePanel.Controls.Add(used_facts_panel);
 
@@ -257,6 +256,7 @@ namespace ProductionModel
                 // get new applyable rules and sort by the strongest ones
                 applyable = Rules.Where((Rule r) => r.condition.IsSubsetOf(work_area) && !used.Contains(r)).ToList();
 
+                ThoughtLinePanel.Refresh();
                 if (res.Count > 0)
                     break;
             }
@@ -274,11 +274,41 @@ namespace ProductionModel
                 pictureBox1.ImageLocation = best.img;
             }
             else {
-                label1.Text = "UNKNOWN";
-                pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+
+                List<Tuple<TerminalFact, double>> guesses= new List<Tuple<TerminalFact, double>>();
+                foreach (TerminalFact t in terminals) {
+                    double val;
+                    var r = Rules.Where(cr => cr.result.Contains(t) && cr.condition.Any(cf => work_area.Contains(cf)))
+                                 .Select(cr => (double)cr.condition.Intersect(work_area).Count() / cr.condition.Count());
+                    if (r.Count() == 0)
+                        val = 0;
+                    else
+                        val = r.Max();
+                    guesses.Add(new Tuple<TerminalFact, double> ( t, val));
+                }
+                guesses = guesses.OrderByDescending(t => t.Item2).ToList();
+                
+
+                if (guesses.Count() == 0 || guesses.First().Item2 == 0)
+                {
+                    label1.Text = "UNKNOWN";
+                    pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+                }
+                else
+                {
+                    guesses = guesses.Where(g => g.Item2 != 0).ToList();
+                    label1.Text = guesses.First().Item1.text + " with probability " + guesses.First().Item2.ToString("N2");
+                    pictureBox1.ImageLocation = guesses.First().Item1.img;
+                    var p = panel_factory();
+                    foreach (var g in guesses) {
+                        p.Controls.Add(label_factory(g.Item1.ToString()+" prb:%"+(g.Item2 * 100).ToString("N1")));
+                    }
+                    ThoughtLinePanel.Controls.Add(p);
+                }
 
             }
             pictureBox1.Refresh();
+            flowLayoutPanel1.Refresh();
         }
 
  
@@ -308,7 +338,7 @@ namespace ProductionModel
 
         public Fact(string _id, string _text)
         {
-            id = _id;
+            id = _id.Trim();
             text = _text;
         }
 
@@ -344,7 +374,7 @@ namespace ProductionModel
 
         public TerminalFact(string _id, string _text, string _img)
         {
-            id = _id;
+            id = _id.Trim();
             text = _text;
             img = _img;
         }
@@ -362,7 +392,7 @@ namespace ProductionModel
 
         public Rule(string _id, Fact[] cond, Fact[] res)
         {
-            id = _id;
+            id = _id.Trim();
             condition = new HashSet<Fact>();
             foreach (var c in cond)
                 condition.Add(c);
