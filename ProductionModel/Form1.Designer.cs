@@ -101,6 +101,7 @@
             this.ThoughtLinePanel.Name = "ThoughtLinePanel";
             this.ThoughtLinePanel.Size = new System.Drawing.Size(969, 178);
             this.ThoughtLinePanel.TabIndex = 7;
+            this.ThoughtLinePanel.WrapContents = false;
             // 
             // Form1
             // 
