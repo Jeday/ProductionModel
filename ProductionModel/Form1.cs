@@ -301,15 +301,15 @@ namespace ProductionModel
                         foreach (Fact f in n.rule.condition)
                             if (or_dict.ContainsKey(f))
                             {
-                                n.children.Add(or_dict[f]);
-                                or_dict[f].parents.Add(n);
+                                cur.children.Add(or_dict[f]);
+                                or_dict[f].parents.Add(cur);
                             }
                             else
                             {
                                 or_dict.Add(f, new OrNode(f));
                                 n.children.Add(or_dict[f]);
                                 or_dict[f].parents.Add(n);
-                                tree.Push(new OrNode(f));
+                                tree.Push(or_dict[f]);
                             }
                     }
                     if(cur is OrNode)
@@ -326,7 +326,7 @@ namespace ProductionModel
                                 and_dict.Add(rl, new AndNode(rl));
                                 n.children.Add(and_dict[rl]);
                                 and_dict[rl].parents.Add(n);
-                                tree.Push(new AndNode(rl));
+                                tree.Push(and_dict[rl]);
                             }
                     }
                 }
