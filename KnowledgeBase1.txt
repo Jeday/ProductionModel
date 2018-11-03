@@ -1,55 +1,55 @@
 17
-f1 : Смотрит на всех свысока. 
-f2 : Проблемы в семье. 
-f4 : Отталкивающий человек. 
-f6 : Часто попадает в неприятности. 
-f7 : Имеет постоянное хобби. 
-f8 : Есть дети. 
-f9 : Делает вид, что понимает, чем занимается. 
-f10 : Любит свою семью. 
-f11 : Любит проводить время на кухне. 
-f12 : Не заботиться о своём здоровье. 
-f13 : Готов поверить в любую чушь. 
-f14 : Смеется над людьми. 
-f15 : Возраст меньше 18 лет. 
-f16 : Любит читать. 
-f17 : Часто выходит из дома. 
-f18 : Не часто выходит из дома. 
-f19 : Возраст старше 18 лет. 
+f1 : РЎРјРѕС‚СЂРёС‚ РЅР° РІСЃРµС… СЃРІС‹СЃРѕРєР°. 
+f2 : РџСЂРѕР±Р»РµРјС‹ РІ СЃРµРјСЊРµ. 
+f4 : РћС‚С‚Р°Р»РєРёРІР°СЋС‰РёР№ С‡РµР»РѕРІРµРє. 
+f6 : Р§Р°СЃС‚Рѕ РїРѕРїР°РґР°РµС‚ РІ РЅРµРїСЂРёСЏС‚РЅРѕСЃС‚Рё. 
+f7 : РРјРµРµС‚ РїРѕСЃС‚РѕСЏРЅРЅРѕРµ С…РѕР±Р±Рё. 
+f8 : Р•СЃС‚СЊ РґРµС‚Рё. 
+f9 : Р”РµР»Р°РµС‚ РІРёРґ, С‡С‚Рѕ РїРѕРЅРёРјР°РµС‚, С‡РµРј Р·Р°РЅРёРјР°РµС‚СЃСЏ. 
+f10 : Р›СЋР±РёС‚ СЃРІРѕСЋ СЃРµРјСЊСЋ. 
+f11 : Р›СЋР±РёС‚ РїСЂРѕРІРѕРґРёС‚СЊ РІСЂРµРјСЏ РЅР° РєСѓС…РЅРµ. 
+f12 : РќРµ Р·Р°Р±РѕС‚РёС‚СЃСЏ Рѕ СЃРІРѕС‘Рј Р·РґРѕСЂРѕРІСЊРµ. 
+f13 : Р“РѕС‚РѕРІ РїРѕРІРµСЂРёС‚СЊ РІ Р»СЋР±СѓСЋ С‡СѓС€СЊ. 
+f14 : РЎРјРµРµС‚СЃСЏ РЅР°Рґ Р»СЋРґСЊРјРё. 
+f15 : Р’РѕР·СЂР°СЃС‚ РјРµРЅСЊС€Рµ 18 Р»РµС‚. 
+f16 : Р›СЋР±РёС‚ С‡РёС‚Р°С‚СЊ. 
+f17 : Р§Р°СЃС‚Рѕ РІС‹С…РѕРґРёС‚ РёР· РґРѕРјР°. 
+f18 : РќРµ С‡Р°СЃС‚Рѕ РІС‹С…РѕРґРёС‚ РёР· РґРѕРјР°. 
+f19 : Р’РѕР·СЂР°СЃС‚ СЃС‚Р°СЂС€Рµ 18 Р»РµС‚. 
 22
-s1 : Любит покушать. 
-s2 : Хорошо готовит. 
-s3 : Задира. 
-s4 : Любит учиться. 
-s6 : Тупой. 
-s7 : Работает. 
-s8 : Влюблённый. 
-s9 : Простак. 
-s10 : Родитель. 
-s11 : Отличница. 
-s12 : Имеет вредные привычки. 
-s13 : Любит выпить. 
-s14 : Доверчив. 
-s15 : Попадает под влияние других людей. 
-s16 : Плохое зрение. 
-s17 : Школьник. 
-s18 : Домохозяйка. 
-s19 : Курит. 
-s20 : Слаборазвитый. 
-s21 : Старик. 
-s22 : Богатый. 
-s23 : Плохой родитель. 
+s1 : Р›СЋР±РёС‚ РїРѕРєСѓС€Р°С‚СЊ. 
+s2 : РҐРѕСЂРѕС€Рѕ РіРѕС‚РѕРІРёС‚. 
+s3 : Р—Р°РґРёСЂР°. 
+s4 : Р›СЋР±РёС‚ СѓС‡РёС‚СЊСЃСЏ. 
+s6 : РўСѓРїРѕР№. 
+s7 : Р Р°Р±РѕС‚Р°РµС‚. 
+s8 : Р’Р»СЋР±Р»С‘РЅРЅС‹Р№. 
+s9 : РџСЂРѕСЃС‚Р°Рє. 
+s10 : Р РѕРґРёС‚РµР»СЊ. 
+s11 : РћС‚Р»РёС‡РЅРёС†Р°. 
+s12 : РРјРµРµС‚ РІСЂРµРґРЅС‹Рµ РїСЂРёРІС‹С‡РєРё. 
+s13 : Р›СЋР±РёС‚ РІС‹РїРёС‚СЊ. 
+s14 : Р”РѕРІРµСЂС‡РёРІ. 
+s15 : РџРѕРїР°РґР°РµС‚ РїРѕРґ РІР»РёСЏРЅРёРµ РґСЂСѓРіРёС… Р»СЋРґРµР№. 
+s16 : РџР»РѕС…РѕРµ Р·СЂРµРЅРёРµ. 
+s17 : РЁРєРѕР»СЊРЅРёРє. 
+s18 : Р”РѕРјРѕС…РѕР·СЏР№РєР°. 
+s19 : РљСѓСЂРёС‚. 
+s20 : РЎР»Р°Р±РѕСЂР°Р·РІРёС‚С‹Р№. 
+s21 : РЎС‚Р°СЂРёРє. 
+s22 : Р‘РѕРіР°С‚С‹Р№. 
+s23 : РџР»РѕС…РѕР№ СЂРѕРґРёС‚РµР»СЊ. 
 10
-t1 : Гомер Симпсон : http://mysimpsons.ru/sites/default/files/character/homer-simpson.jpg
-t2 : Мардж Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
-t3 : Барт Симпсон : http://www.simpsons-art.ru/personas/bart.png
-t4 : Лиза Симпсон : http://mysimpsons.ru/sites/default/files/character/lisa-simpson_6k3ml.jpg
-t5 : Мэгги Симпсон : https://vignette.wikia.nocookie.net/simpsons/images/8/8b/Maggie.jpg/revision/latest?cb=20140522121724&path-prefix=ru
-t6 : Абрахам Симпсон : https://vignette.wikia.nocookie.net/simpsons/images/c/c5/Abraham_Simpson_-_shading.png/revision/latest?cb=20150522162044&path-prefix=ru
-t7 : Пэтти Бувье : https://vignette.wikia.nocookie.net/simpsons/images/5/53/Patty.png/revision/latest/scale-to-width-down/185?cb=20140823090359&path-prefix=ru
-t8 : Милхаус Ван Хутен : https://vignette.wikia.nocookie.net/simpsons/images/9/91/Milhouse_Van_Houten_2.png/revision/latest?cb=20180429212659
-t9 : Нельсон Манц : https://citaty.info/files/characters/69883.gif
-t10 : Чарльз Монтгомери Бёрнс :http://www.simpsons-art.ru/personas/atom_1.jpg
+t1 : Р“РѕРјРµСЂ РЎРёРјРїСЃРѕРЅ : http://mysimpsons.ru/sites/default/files/character/homer-simpson.jpg
+t2 : РњР°СЂРґР¶ РЎРёРјРїСЃРѕРЅ : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
+t3 : Р‘Р°СЂС‚ РЎРёРјРїСЃРѕРЅ : http://www.simpsons-art.ru/personas/bart.png
+t4 : Р›РёР·Р° РЎРёРјРїСЃРѕРЅ : http://mysimpsons.ru/sites/default/files/character/lisa-simpson_6k3ml.jpg
+t5 : РњСЌРіРіРё РЎРёРјРїСЃРѕРЅ : https://vignette.wikia.nocookie.net/simpsons/images/8/8b/Maggie.jpg/revision/latest?cb=20140522121724&path-prefix=ru
+t6 : РђР±СЂР°С…Р°Рј РЎРёРјРїСЃРѕРЅ : https://vignette.wikia.nocookie.net/simpsons/images/c/c5/Abraham_Simpson_-_shading.png/revision/latest?cb=20150522162044&path-prefix=ru
+t7 : РџСЌС‚С‚Рё Р‘СѓРІСЊРµ : https://vignette.wikia.nocookie.net/simpsons/images/5/53/Patty.png/revision/latest/scale-to-width-down/185?cb=20140823090359&path-prefix=ru
+t8 : РњРёР»С…Р°СѓСЃ Р’Р°РЅ РҐСѓС‚РµРЅ : https://vignette.wikia.nocookie.net/simpsons/images/9/91/Milhouse_Van_Houten_2.png/revision/latest?cb=20180429212659
+t9 : РќРµР»СЊСЃРѕРЅ РњР°РЅС† : https://citaty.info/files/characters/69883.gif
+t10 : Р§Р°СЂР»СЊР· РњРѕРЅС‚РіРѕРјРµСЂРё Р‘С‘СЂРЅСЃ :http://www.simpsons-art.ru/personas/atom_1.jpg
 36
 r1 : f17, f19 : s7
 r2 : f9 : s6
