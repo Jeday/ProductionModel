@@ -301,15 +301,15 @@ namespace ProductionModel
                         foreach (Fact f in n.rule.condition)
                             if (or_dict.ContainsKey(f))
                             {
-                                cur.children.Add(or_dict[f]);
-                                or_dict[f].parents.Add(cur);
+                                n.children.Add(or_dict[f]);
+                                or_dict[f].parents.Add(n);
                             }
                             else
                             {
                                 or_dict.Add(f, new OrNode(f));
                                 n.children.Add(or_dict[f]);
                                 or_dict[f].parents.Add(n);
-                                tree.Push(or_dict[f]);
+                                tree.Push(new OrNode(f));
                             }
                     }
                     if(cur is OrNode)
@@ -326,7 +326,7 @@ namespace ProductionModel
                                 and_dict.Add(rl, new AndNode(rl));
                                 n.children.Add(and_dict[rl]);
                                 and_dict[rl].parents.Add(n);
-                                tree.Push(and_dict[rl]);
+                                tree.Push(new AndNode(rl));
                             }
                     }
                 }
@@ -347,7 +347,7 @@ namespace ProductionModel
         private void button2_Click(object sender, EventArgs e)
         {
             init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
-            List<TerminalFact> res = backward();
+            List<TerminalFact> res = forward();
             if (res.Count != 0)
             {
                 TerminalFact best = res.First();

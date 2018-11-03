@@ -1,7 +1,9 @@
-17
+21
 f1 : Смотрит на всех свысока. 
 f2 : Проблемы в семье. 
+f3 : Всегда готов помочь другому. 
 f4 : Отталкивающий человек. 
+f5 : Заботится о внешнем виде. 
 f6 : Часто попадает в неприятности. 
 f7 : Имеет постоянное хобби. 
 f8 : Есть дети. 
@@ -16,15 +18,18 @@ f16 : Любит читать.
 f17 : Часто выходит из дома. 
 f18 : Не часто выходит из дома. 
 f19 : Возраст старше 18 лет. 
-22
+f20 : Целеустремлённый. 
+f21 : Избегает конфликтов. 
+24
 s1 : Любит покушать. 
 s2 : Хорошо готовит. 
 s3 : Задира. 
 s4 : Любит учиться. 
+s5 : Живёт по правилам. 
 s6 : Тупой. 
 s7 : Работает. 
 s8 : Влюблённый. 
-s9 : Простак. 
+s9 : Неудачник. 
 s10 : Родитель. 
 s11 : Отличница. 
 s12 : Имеет вредные привычки. 
@@ -39,7 +44,8 @@ s20 : Слаборазвитый.
 s21 : Старик. 
 s22 : Богатый. 
 s23 : Плохой родитель. 
-10
+s24 : Религиозный.
+14
 t1 : Гомер Симпсон : http://mysimpsons.ru/sites/default/files/character/homer-simpson.jpg
 t2 : Мардж Симпсон : https://upload.wikimedia.org/wikipedia/ru/0/0b/Marge_Simpson.png
 t3 : Барт Симпсон : http://www.simpsons-art.ru/personas/bart.png
@@ -49,17 +55,21 @@ t6 : Абрахам Симпсон : https://vignette.wikia.nocookie.net/simpson
 t7 : Пэтти Бувье : https://vignette.wikia.nocookie.net/simpsons/images/5/53/Patty.png/revision/latest/scale-to-width-down/185?cb=20140823090359&path-prefix=ru
 t8 : Милхаус Ван Хутен : https://vignette.wikia.nocookie.net/simpsons/images/9/91/Milhouse_Van_Houten_2.png/revision/latest?cb=20180429212659
 t9 : Нельсон Манц : https://citaty.info/files/characters/69883.gif
-t10 : Чарльз Монтгомери Бёрнс :http://www.simpsons-art.ru/personas/atom_1.jpg
-36
+t10 : Чарльз Монтгомери Бёрнс : http://www.simpsons-art.ru/personas/atom_1.jpg
+t11 : Нед Фландерс : https://upload.wikimedia.org/wikipedia/ru/thumb/8/84/Ned_Flanders.png/220px-Ned_Flanders.png
+t12 : Клоун Красти : https://upload.wikimedia.org/wikipedia/ru/thumb/e/e5/Krusty_The_Clown.png/250px-Krusty_The_Clown.png
+t13 : Сеймур Скиннер : https://vignette.wikia.nocookie.net/simpsons/images/1/18/Skinner.jpg/revision/latest?cb=20151128071907&path-prefix=ru
+t14 : Ральф Виггам : https://upload.wikimedia.org/wikipedia/ru/thumb/0/05/Ralph_Wiggum.jpg/150px-Ralph_Wiggum.jpg
+45
 r1 : f17, f19 : s7
 r2 : f9 : s6
 r3 : f10 : s8
 r4 : f11, f12 : s1
 r5 : f8 : s10   
-r6 : s6, s8 : s9
+r6 : f6, f21 : s9
 r7 : f12 : s12
 r8 : f6, s12 : s13
-r9 : s1, s7, s9, s10, s13: t1
+r9 : s1, s7, s10, s13: t1
 r10 : f6, f13 : s14, s9
 r11 : s14, s9 : s15
 r12 : f12, f16 : s16
@@ -72,18 +82,27 @@ r18 : f4, s12 : s19
 r19 : f4, f14 : s3
 r20 : s3, s7, s19 : t7
 r21 : f14, f6 : s3
-r22 : s3, s17 : t3
+r22 : s3, s8, s17 : t3
 r23 : f2, s3, s17 : t9
 r24 : f2, s8 : s20
 r25 : f18, f19 : s21
 r26 : f12, s21 : s16
 r27 : s10, s16, s21 : t6
-r28 : f1, s7 : s22
+r28 : f1, f20, s7 : s22
 r29 : f2, s10 : s23
 r30 : s3, s23, s22 : t10
 r31 : f16, s17 : s4
-r32 : f1, s4 : s11
-r33 : f7, s8, s11 : t4
+r32 : f20, s4 : s11
+r33 : f3, f7, s8, s11 : t4
 r34 : f15, f18 : s20
 r35 : f9, f13 : s15
-r36 : s15, s20 : t5
+r36 : f18, s15, s20 : t5
+r37 : f13 : s14
+r38 : f5, f20 : s5
+r39 : f3, s5, s14 : s24
+r40 : s8, s10, s24 : t11
+r41 : s3, s13, s22 : t12
+r42 : f20, s7 : s5
+r43 : f3, s5, s9 : t13 
+r44 : s6, s15 : s20
+r45 : s15, s17, s20 : t14
