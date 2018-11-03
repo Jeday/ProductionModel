@@ -401,6 +401,27 @@ namespace ProductionModel
                 result.Add(r);
         }
 
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+
+            return id == (obj as Rule).id;  
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+
+            return id.GetHashCode();
+        }
+
         public override string ToString()
         {
             return id + ": " + string.Join(",", condition.Select(f => f.id)) + " -> " + string.Join(",", result.Select(f => f.id));
