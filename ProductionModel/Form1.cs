@@ -45,7 +45,7 @@ namespace ProductionModel
             Dictionary<string, TerminalFact> termfacts = new Dictionary<string, TerminalFact>();
             Dictionary<string, Fact> support_facts = new Dictionary<string, Fact>();
             List<Rule> rules = new List<Rule>();
-            List<string> lines = System.IO.File.ReadLines(filename, Encoding.GetEncoding(1251)).ToList();
+            List<string> lines = System.IO.File.ReadLines(filename, Encoding.UTF8).ToList();
             var st = lines[0].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             int countKnowledge = Int32.Parse(st[0]);
 
@@ -263,10 +263,91 @@ namespace ProductionModel
             return res;
         }
 
+        private void resolve(Node n)
+        {
+            if (n.flag)
+                return;
+            if (n is AndNode) 
+                n.flag = n.children.All(c => c.flag == true);
+
+            if(n is OrNode)
+                n.flag = n.children.Any(c => c.flag == true);
+
+            if (n.flag)
+            {
+                foreach (Node p in n.parents)
+                    resolve(p);
+            }
+        }
+
+        private List<TerminalFact> backward()
+        {
+            List<TerminalFact> res = new List<TerminalFact>();
+            foreach (TerminalFact term in terminals)
+            {
+                Dictionary<Rule, AndNode> and_dict = new Dictionary<Rule, AndNode>();
+                Dictionary<Fact, OrNode> or_dict = new Dictionary<Fact, OrNode>();
+                OrNode root = new OrNode(term);
+                or_dict.Add(term, root);
+
+                Stack<Node> tree = new Stack<Node>();
+                tree.Push(root);
+                while (tree.Count != 0)
+                {
+                    Node cur = tree.Pop();
+                    if (cur is AndNode)
+                    {
+                        AndNode n = cur as AndNode;
+                        foreach (Fact f in n.rule.condition)
+                            if (or_dict.ContainsKey(f))
+                            {
+                                n.children.Add(or_dict[f]);
+                                or_dict[f].parents.Add(n);
+                            }
+                            else
+                            {
+                                or_dict.Add(f, new OrNode(f));
+                                n.children.Add(or_dict[f]);
+                                or_dict[f].parents.Add(n);
+                                tree.Push(new OrNode(f));
+                            }
+                    }
+                    if(cur is OrNode)
+                    {
+                        OrNode n = cur as OrNode;
+                        foreach (Rule rl in Rules.Where(r => r.result.Contains(n.fact)))
+                            if (and_dict.ContainsKey(rl))
+                            {
+                                n.children.Add(and_dict[rl]);
+                                and_dict[rl].parents.Add(n);
+                            }
+                            else
+                            {
+                                and_dict.Add(rl, new AndNode(rl));
+                                n.children.Add(and_dict[rl]);
+                                and_dict[rl].parents.Add(n);
+                                tree.Push(new AndNode(rl));
+                            }
+                    }
+                }
+
+                foreach(var val in or_dict)
+                    if (init_knowledge.Contains(val.Key))
+                    {
+                        val.Value.flag = true;
+                        foreach (Node p in val.Value.parents)
+                            resolve(p);
+                        if (root.flag == true)
+                            res.Add(root.fact as TerminalFact);
+                    }
+            }
+            return res;
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
-            List<TerminalFact> res = forward();
+            List<TerminalFact> res = backward();
             if (res.Count != 0)
             {
                 TerminalFact best = res.First();
@@ -407,5 +488,40 @@ namespace ProductionModel
         }
             
 
+    }
+
+    class Node
+    {
+        public List<Node> parents = new List<Node>();
+        public List<Node> children = new List<Node>();
+        public bool flag = false;
+
+        public Node() { }
+    }
+
+    class AndNode : Node
+    {
+        public Rule rule = new Rule();
+
+        public AndNode()
+        { }      
+        
+        public AndNode(Rule v)
+        {
+            rule = v;
+        }
+    }
+
+    class OrNode : Node
+    {
+        public Fact fact = new Fact();
+
+        public OrNode()
+        { }
+
+        public OrNode(Fact v)
+        {
+            fact = v;
+        }
     }
 }
