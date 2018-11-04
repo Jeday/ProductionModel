@@ -283,6 +283,7 @@ namespace ProductionModel
 
         private Dictionary<TerminalFact, int> backward()
         {
+            ThoughtLinePanel.Controls.Clear();
             Dictionary<TerminalFact, int> res = new Dictionary<TerminalFact, int>();
             foreach (TerminalFact term in terminals)
             {
@@ -302,15 +303,15 @@ namespace ProductionModel
                         foreach (Fact f in n.rule.condition)
                             if (or_dict.ContainsKey(f))
                             {
-                                n.children.Add(or_dict[f]);
-                                or_dict[f].parents.Add(n);
+                                cur.children.Add(or_dict[f]);
+                                or_dict[f].parents.Add(cur);
                             }
                             else
                             {
                                 or_dict.Add(f, new OrNode(f));
                                 n.children.Add(or_dict[f]);
                                 or_dict[f].parents.Add(n);
-                                tree.Push(new OrNode(f));
+                                tree.Push(or_dict[f]);
                             }
                     }
                     if(cur is OrNode)
@@ -319,15 +320,15 @@ namespace ProductionModel
                         foreach (Rule rl in Rules.Where(r => r.result.Contains(n.fact)))
                             if (and_dict.ContainsKey(rl))
                             {
-                                n.children.Add(and_dict[rl]);
-                                and_dict[rl].parents.Add(n);
+                                cur.children.Add(and_dict[rl]);
+                                and_dict[rl].parents.Add(cur);
                             }
                             else
                             {
                                 and_dict.Add(rl, new AndNode(rl));
                                 n.children.Add(and_dict[rl]);
                                 and_dict[rl].parents.Add(n);
-                                tree.Push(new AndNode(rl));
+                                tree.Push(and_dict[rl]);
                             }
                     }
                 }
@@ -411,7 +412,7 @@ namespace ProductionModel
                 Dictionary<TerminalFact, int> res = backward();
                 if (res.Count != 0)
                 {
-                    TerminalFact best = res.Keys.First();
+                    TerminalFact best = res.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
                     label1.Text = best.text;
                     pictureBox1.ImageLocation = best.img;
                 }

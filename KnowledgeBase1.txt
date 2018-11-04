@@ -59,8 +59,8 @@ t10 : Чарльз Монтгомери Бёрнс : http://www.simpsons-art.ru/
 t11 : Нед Фландерс : https://upload.wikimedia.org/wikipedia/ru/thumb/8/84/Ned_Flanders.png/220px-Ned_Flanders.png
 t12 : Клоун Красти : https://upload.wikimedia.org/wikipedia/ru/thumb/e/e5/Krusty_The_Clown.png/250px-Krusty_The_Clown.png
 t13 : Сеймур Скиннер : https://vignette.wikia.nocookie.net/simpsons/images/1/18/Skinner.jpg/revision/latest?cb=20151128071907&path-prefix=ru
-t14 : Ральф Виггам : https://upload.wikimedia.org/wikipedia/ru/thumb/0/05/Ralph_Wiggum.jpg/150px-Ralph_Wiggum.jpg
-45
+t14 : Ральф Виггам : https://cs6.pikabu.ru/post_img/2017/05/18/11/1495132237118654510.png
+46
 r1 : f17, f19 : s7
 r2 : f9 : s6
 r3 : f10 : s8
@@ -105,4 +105,4 @@ r41 : s3, s13, s22 : t12
 r42 : f20, s7 : s5
 r43 : f3, s5, s9 : t13 
 r44 : s6, s15 : s20
-r45 : s15, s17, s20 : t14
+r45 : f21, s15, s17, s20 : t14
