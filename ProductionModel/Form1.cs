@@ -21,8 +21,8 @@ namespace ProductionModel
         public Form1()
         {
             InitializeComponent();
-    
-            
+            checkBox1.Checked = false;
+            checkBox2.Checked = false;
         }
 
         private void reset_controls() {
@@ -151,6 +151,7 @@ namespace ProductionModel
             if (!System.IO.File.Exists(filename))
                 return;
             parse_file(filename);
+            checkBox1.Checked = true;
         }
 
         private FlowLayoutPanel panel_factory() {
@@ -280,9 +281,9 @@ namespace ProductionModel
             }
         }
 
-        private List<TerminalFact> backward()
+        private Dictionary<TerminalFact, int> backward()
         {
-            List<TerminalFact> res = new List<TerminalFact>();
+            Dictionary<TerminalFact, int> res = new Dictionary<TerminalFact, int>();
             foreach (TerminalFact term in terminals)
             {
                 Dictionary<Rule, AndNode> and_dict = new Dictionary<Rule, AndNode>();
@@ -331,14 +332,24 @@ namespace ProductionModel
                     }
                 }
 
-                foreach(var val in or_dict)
+                int cnt = 0;
+                foreach (var f in or_dict)
+                {
+                    if (init_knowledge.Contains(f.Key))
+                        ++cnt;
+                }
+
+                foreach (var val in or_dict)
                     if (init_knowledge.Contains(val.Key))
                     {
                         val.Value.flag = true;
                         foreach (Node p in val.Value.parents)
                             resolve(p);
                         if (root.flag == true)
-                            res.Add(root.fact as TerminalFact);
+                        {
+                            res.Add(root.fact as TerminalFact, cnt);
+                            break;
+                        }
                     }
             }
             return res;
@@ -346,53 +357,84 @@ namespace ProductionModel
 
         private void button2_Click(object sender, EventArgs e)
         {
-            init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
-            List<TerminalFact> res = forward();
-            if (res.Count != 0)
+            if (checkBox1.Checked)
             {
-                TerminalFact best = res.First();
-                label1.Text = best.text;
-                pictureBox1.ImageLocation = best.img;
-            }
-            else {
-
-                List<Tuple<TerminalFact, double>> guesses= new List<Tuple<TerminalFact, double>>();
-                foreach (TerminalFact t in terminals) {
-                    double val;
-                    var r = Rules.Where(cr => cr.result.Contains(t) && cr.condition.Any(cf => work_area.Contains(cf)))
-                                 .Select(cr => (double)cr.condition.Intersect(work_area).Count() / cr.condition.Count());
-                    if (r.Count() == 0)
-                        val = 0;
-                    else
-                        val = r.Max();
-                    guesses.Add(new Tuple<TerminalFact, double> ( t, val));
-                }
-                guesses = guesses.OrderByDescending(t => t.Item2).ToList();
-                
-
-                if (guesses.Count() == 0 || guesses.First().Item2 == 0)
+                init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
+                List<TerminalFact> res = forward();
+                if (res.Count != 0)
                 {
-                    label1.Text = "UNKNOWN";
-                    pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+                    TerminalFact best = res.First();
+                    label1.Text = best.text;
+                    pictureBox1.ImageLocation = best.img;
                 }
                 else
                 {
-                    guesses = guesses.Where(g => g.Item2 != 0).ToList();
-                    label1.Text = guesses.First().Item1.text + " with probability " + guesses.First().Item2.ToString("N2");
-                    pictureBox1.ImageLocation = guesses.First().Item1.img;
-                    var p = panel_factory();
-                    foreach (var g in guesses) {
-                        p.Controls.Add(label_factory(g.Item1.ToString()+" prb:%"+(g.Item2 * 100).ToString("N1")));
-                    }
-                    ThoughtLinePanel.Controls.Add(p);
-                }
 
+                    List<Tuple<TerminalFact, double>> guesses = new List<Tuple<TerminalFact, double>>();
+                    foreach (TerminalFact t in terminals)
+                    {
+                        double val;
+                        var r = Rules.Where(cr => cr.result.Contains(t) && cr.condition.Any(cf => work_area.Contains(cf)))
+                                     .Select(cr => (double)cr.condition.Intersect(work_area).Count() / cr.condition.Count());
+                        if (r.Count() == 0)
+                            val = 0;
+                        else
+                            val = r.Max();
+                        guesses.Add(new Tuple<TerminalFact, double>(t, val));
+                    }
+                    guesses = guesses.OrderByDescending(t => t.Item2).ToList();
+
+
+                    if (guesses.Count() == 0 || guesses.First().Item2 == 0)
+                    {
+                        label1.Text = "UNKNOWN";
+                        pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+                    }
+                    else
+                    {
+                        guesses = guesses.Where(g => g.Item2 != 0).ToList();
+                        label1.Text = guesses.First().Item1.text + " with probability " + guesses.First().Item2.ToString("N2");
+                        pictureBox1.ImageLocation = guesses.First().Item1.img;
+                        var p = panel_factory();
+                        foreach (var g in guesses)
+                        {
+                            p.Controls.Add(label_factory(g.Item1.ToString() + " prb:%" + (g.Item2 * 100).ToString("N1")));
+                        }
+                        ThoughtLinePanel.Controls.Add(p);
+                    }
+
+                }
             }
+            else if (checkBox2.Checked)
+            {
+                init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
+                Dictionary<TerminalFact, int> res = backward();
+                if (res.Count != 0)
+                {
+                    TerminalFact best = res.Keys.First();
+                    label1.Text = best.text;
+                    pictureBox1.ImageLocation = best.img;
+                }
+            }
+            else
+            {
+                return;
+            }
+            
             pictureBox1.Refresh();
             flowLayoutPanel1.Refresh();
         }
 
- 
+        private void checkBox1_Click(object sender, EventArgs e)
+        {
+            CheckBox c = sender as CheckBox;
+            if (c.Checked)
+            {
+                checkBox1.Checked = false;
+                checkBox2.Checked = false;
+                c.Checked = true;
+            }
+        }
     }
 
     public class Fact
