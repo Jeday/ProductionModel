@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -43,10 +44,10 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.Location = new System.Drawing.Point(552, 16);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Location = new System.Drawing.Point(483, 17);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(731, 473);
+            this.pictureBox1.Size = new System.Drawing.Size(639, 503);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -54,11 +55,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(561, 505);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(491, 537);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 39);
+            this.label1.Size = new System.Drawing.Size(0, 28);
             this.label1.TabIndex = 2;
             // 
             // openFileDialog1
@@ -67,10 +67,12 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(17, 517);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(27, 549);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 28);
+            this.button1.Size = new System.Drawing.Size(110, 30);
             this.button1.TabIndex = 4;
             this.button1.Text = "Load File";
             this.button1.UseVisualStyleBackColor = true;
@@ -81,19 +83,22 @@
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(31, 16);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.flowLayoutPanel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(27, 17);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(485, 472);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(425, 501);
             this.flowLayoutPanel1.TabIndex = 5;
             this.flowLayoutPanel1.WrapContents = false;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(160, 517);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Location = new System.Drawing.Point(147, 549);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 28);
+            this.button2.Size = new System.Drawing.Size(110, 30);
             this.button2.TabIndex = 6;
             this.button2.Text = "Calculate";
             this.button2.UseVisualStyleBackColor = true;
@@ -104,19 +109,22 @@
             this.ThoughtLinePanel.AutoScroll = true;
             this.ThoughtLinePanel.BackColor = System.Drawing.Color.White;
             this.ThoughtLinePanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ThoughtLinePanel.Location = new System.Drawing.Point(16, 567);
-            this.ThoughtLinePanel.Margin = new System.Windows.Forms.Padding(4);
+            this.ThoughtLinePanel.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ThoughtLinePanel.Location = new System.Drawing.Point(27, 602);
+            this.ThoughtLinePanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ThoughtLinePanel.Name = "ThoughtLinePanel";
-            this.ThoughtLinePanel.Size = new System.Drawing.Size(1291, 205);
+            this.ThoughtLinePanel.Size = new System.Drawing.Size(1096, 147);
             this.ThoughtLinePanel.TabIndex = 7;
             this.ThoughtLinePanel.WrapContents = false;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(302, 505);
+            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBox1.Location = new System.Drawing.Point(305, 537);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(153, 21);
+            this.checkBox1.Size = new System.Drawing.Size(177, 27);
             this.checkBox1.TabIndex = 8;
             this.checkBox1.Text = "Forward Reasoning";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -125,9 +133,11 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(302, 539);
+            this.checkBox2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBox2.Location = new System.Drawing.Point(305, 569);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(163, 21);
+            this.checkBox2.Size = new System.Drawing.Size(188, 27);
             this.checkBox2.TabIndex = 9;
             this.checkBox2.Text = "Backward Reasoning";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -135,9 +145,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1324, 788);
+            this.ClientSize = new System.Drawing.Size(1159, 763);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.ThoughtLinePanel);
@@ -146,9 +156,11 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Production Model - The Simpsons";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
