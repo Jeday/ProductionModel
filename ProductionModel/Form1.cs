@@ -151,7 +151,7 @@ namespace ProductionModel
             if (!System.IO.File.Exists(filename))
                 return;
             parse_file(filename);
-            checkBox1.Checked = true;
+            //checkBox1.Checked = true;
         }
 
         private FlowLayoutPanel panel_factory() {
@@ -281,10 +281,10 @@ namespace ProductionModel
             }
         }
 
-        private Dictionary<TerminalFact, int> backward()
+        private Dictionary<TerminalFact, Tuple<int, double>> backward()
         {
             ThoughtLinePanel.Controls.Clear();
-            Dictionary<TerminalFact, int> res = new Dictionary<TerminalFact, int>();
+            Dictionary<TerminalFact, Tuple<int, double>> res = new Dictionary<TerminalFact, Tuple<int,double>>();
             foreach (TerminalFact term in terminals)
             {
                 Dictionary<Rule, AndNode> and_dict = new Dictionary<Rule, AndNode>();
@@ -340,6 +340,8 @@ namespace ProductionModel
                         ++cnt;
                 }
 
+                var person = panel_factory();
+                person.Controls.Add(label_factory(root.fact.text + ": ", Color.Green));
                 foreach (var val in or_dict)
                     if (init_knowledge.Contains(val.Key))
                     {
@@ -348,16 +350,37 @@ namespace ProductionModel
                             resolve(p);
                         if (root.flag == true)
                         {
-                            res.Add(root.fact as TerminalFact, cnt);
+                            person.Controls.Add(label_factory(val.Key.text, Color.Red));
+                            res.Add(root.fact as TerminalFact, Tuple.Create(cnt,1.0));
                             break;
                         }
+                        else {
+                            person.Controls.Add(label_factory(val.Key.text));
+                        }
                     }
-            }
+                if (root.flag)
+                {
+                    ThoughtLinePanel.Controls.Add(person);
+                }
+                else {
+                    int resolved=0;
+                    int all = 0;
+                    foreach (Node n in root.children) {
+                        all += n.children.Count();
+                        resolved += n.children.Count(r => r.flag);
+                    }
+                    res.Add(root.fact as TerminalFact, Tuple.Create(cnt, (double)resolved / all));
+
+                }
+            
+         }
+
             return res;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
             if (checkBox1.Checked)
             {
                 init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
@@ -409,12 +432,61 @@ namespace ProductionModel
             else if (checkBox2.Checked)
             {
                 init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
-                Dictionary<TerminalFact, int> res = backward();
+                Dictionary<TerminalFact, Tuple<int, double>> res = backward();
                 if (res.Count != 0)
                 {
-                    TerminalFact best = res.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-                    label1.Text = best.text;
-                    pictureBox1.ImageLocation = best.img;
+                    TerminalFact best_guess = null;
+                    TerminalFact best_result = null;
+                    var guess = panel_factory();
+                    guess.Controls.Add(label_factory("Guesses: ",Color.Red));
+                    var guessed_terminals = res.Where(r => r.Value.Item2 != 1.0 && r.Value.Item2 >0.0).OrderByDescending(r => r.Value.Item2).ThenByDescending(r => r.Value.Item1).ToList();
+                    
+                    foreach (var g in guessed_terminals) {
+                        guess.Controls.Add(label_factory(g.Key.text + " prb:%" + (g.Value.Item2*100).ToString("N1")));
+                    }
+                    if (guessed_terminals.Count > 0) {
+                        ThoughtLinePanel.Controls.Add(guess);
+                        best_guess = guessed_terminals.First().Key as TerminalFact; 
+                    }
+
+                    var result = panel_factory();
+                    result.Controls.Add(label_factory("Results: ", Color.Green));
+                    var resolved = res.Where(r => r.Value.Item2 == 1.0).OrderByDescending(r => r.Value.Item1).ToList();
+                    foreach (var r in resolved)
+                    {
+                        result.Controls.Add(label_factory(r.Key.text));
+                    }
+
+                    if (resolved.Count > 0)
+                    {
+                        ThoughtLinePanel.Controls.Add(result);
+                        best_result = resolved.First().Key as TerminalFact;
+                    }
+
+                    if (best_result != null)
+                    {
+                        pictureBox1.ImageLocation = best_result.img;
+                        label1.Text = best_result.text;
+
+                    }
+                    else if (best_guess != null)
+                    {
+                        pictureBox1.ImageLocation = best_guess.img;
+                        label1.Text = best_guess.text;
+                    }
+                    else {
+                        label1.Text = "UNKNOWN";
+                        pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+                    }
+
+
+                    
+                }
+                else
+                {
+                    label1.Text = "UNKNOWN";
+                    pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+
                 }
             }
             else
@@ -428,8 +500,8 @@ namespace ProductionModel
 
         private void checkBox1_Click(object sender, EventArgs e)
         {
-            CheckBox c = sender as CheckBox;
-            if (c.Checked)
+           CheckBox c = sender as CheckBox;
+           if (c.Checked)
             {
                 checkBox1.Checked = false;
                 checkBox2.Checked = false;
