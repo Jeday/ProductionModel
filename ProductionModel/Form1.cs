@@ -263,7 +263,7 @@ namespace ProductionModel
         }
 
         private List<TerminalFact> confidence_forward() {
-            double THRESHOLD = 0.2;
+            double THRESHOLD = 0.05;
             selected_userfacts = all_userfacts.Select(f => {
                 Fact r = new Fact(f)
                 {
@@ -290,9 +290,9 @@ namespace ProductionModel
             }
 
 
-           
 
-            while(res.Count < 1)
+            applyable = applyable.ToDictionary(item => item.Key, item => RuleConditionWeight(item.Key));
+            while (applyable.Count(item => item.Value>=THRESHOLD) >0)
             {
 
 
@@ -465,6 +465,7 @@ namespace ProductionModel
 
             if (ForwardReasoningButton.Checked)
             {
+                ThoughtLinePanel.Controls.Clear();
                 selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value >= 50).ToList();
                 List<TerminalFact> res = forward();
                 if (res.Count != 0)
@@ -513,13 +514,21 @@ namespace ProductionModel
             }
             else if (FCbutton.Checked)
             {
+                ThoughtLinePanel.Controls.Clear();
                 //selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
                 List<TerminalFact> res = confidence_forward();
                 if (res.Count != 0)
                 {
+                    res = res.OrderByDescending(f => f.weight).ToList();
                     TerminalFact best = res.First();
                     label1.Text = best.text+ "%" + (best.weight * 100).ToString("N1");
                     pictureBox1.ImageLocation = best.img;
+                    var panel = panel_factory();
+                    panel.Controls.Add(label_factory("Guesses:"));
+                    foreach (var f in res) {
+                        panel.Controls.Add(label_factory(f.text + "%" + (f.weight * 100).ToString("N1")));
+                    }
+                    ThoughtLinePanel.Controls.Add(panel);
                 }
                 else
                 {
@@ -530,7 +539,7 @@ namespace ProductionModel
             }
             else if (BackwardReasoningButton.Checked)
             {
-                selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
+                selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value >= 50).ToList();
                 Dictionary<TerminalFact, Tuple<int, double>> res = backward();
                 if (res.Count != 0)
                 {
