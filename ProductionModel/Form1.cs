@@ -12,8 +12,8 @@ namespace ProductionModel
 {
     public partial class Form1 : Form
     {
-        private List<Fact> init_knowledge= new List<Fact>(); // user choosen facts
-        private List<Fact> possible_knoweledge = new List<Fact>(); //all facts that users can change
+        private List<Fact> selected_userfacts= new List<Fact>(); // user choosen facts
+        private List<Fact> all_userfacts = new List<Fact>(); //all facts that users can change
         private List<TerminalFact> terminals = new List<TerminalFact>(); // terminal facts
         private List<Rule> Rules = new List<Rule>();
         private HashSet<Fact> work_area = new HashSet<Fact>(); // proven facts
@@ -21,15 +21,14 @@ namespace ProductionModel
         public Form1()
         {
             InitializeComponent();
-            checkBox1.Checked = false;
-            checkBox2.Checked = false;
+            ForwardReasoningButton.Checked = true;
         }
 
         private void reset_controls() {
             foreach (Control c in flowLayoutPanel1.Controls)
                 c.Dispose();
             flowLayoutPanel1.Controls.Clear();
-            foreach (Fact f in possible_knoweledge) {
+            foreach (Fact f in all_userfacts) {
                 FactControl fc = new FactControl();
                 fc.FactText.Text = f.text;
                 fc.father = f;
@@ -116,15 +115,15 @@ namespace ProductionModel
                 rules.Add(new Rule(id, list_facts.ToArray(), list_facts2.ToArray()));
  
             }
-            init_knowledge.Clear();
-            possible_knoweledge.Clear();
+            selected_userfacts.Clear();
+            all_userfacts.Clear();
             terminals.Clear();
             Rules.Clear();
             work_area.Clear();
             support_area.Clear();
             foreach (Fact f in facts.Values)
             {
-                possible_knoweledge.Add(f);
+                all_userfacts.Add(f);
             }
             foreach (Rule r in rules)
             {
@@ -173,10 +172,9 @@ namespace ProductionModel
             return l;
         }
 
-
         private List<TerminalFact> forward() {
             ThoughtLinePanel.Controls.Clear();
-            work_area = new HashSet<Fact>(init_knowledge.Select(x => new Fact(x)));
+            work_area = new HashSet<Fact>(selected_userfacts.Select(x => new Fact(x)));
             List<Rule> applyable = Rules.Where(r=> r.condition.IsSubsetOf(work_area)).ToList();
             HashSet<Rule> used = new HashSet<Rule>() ;
             List<TerminalFact> res = new List<TerminalFact>();
@@ -264,6 +262,90 @@ namespace ProductionModel
             return res;
         }
 
+        private List<TerminalFact> confidence_forward() {
+            double THRESHOLD = 0.2;
+            selected_userfacts = all_userfacts.Select(f => {
+                Fact r = new Fact(f)
+                {
+                    weight = (double)f.cntrl.FactValueControl.Value / 100
+                }; return r;
+            }).ToList();
+
+
+            Dictionary<Rule, double> applyable = Rules.ToDictionary(r => r, r => 0.0);
+            HashSet<Rule> used = new HashSet<Rule>();
+            List<TerminalFact> res = new List<TerminalFact>();
+            HashSet<Fact> all_facts = new HashSet<Fact>(support_area.Union(terminals).Select(f => new Fact(f) { weight = 0 }));
+            all_facts.UnionWith(selected_userfacts);
+
+
+
+            double RuleConditionWeight(Rule r) {
+                var new_cond = all_facts.Where(ft =>  r.condition.Select(f => f.id).Contains(ft.id));
+                double res_weight = 0;
+                if (new_cond.Count() > 0) {
+                    res_weight = r.weight * new_cond.Min(f => f.weight);
+                }
+                return res_weight;
+            }
+
+
+           
+
+            while(res.Count < 1)
+            {
+
+
+                if (applyable.Count <=0) {
+                    break;
+                }
+
+                applyable = applyable.ToDictionary(item => item.Key, item => RuleConditionWeight(item.Key));
+
+                Rule rule_toapply = applyable.Keys.OrderByDescending(key => applyable[key]).ThenByDescending(key => key.weight).First();
+                if (applyable[rule_toapply] < THRESHOLD)
+                    break;
+                var new_result = all_facts.Where(ft => rule_toapply.result.Select(f => f.id).Contains(ft.id));
+                double res_conf = applyable[rule_toapply];
+                // 
+                var panel = panel_factory();
+                panel.Controls.Add(label_factory("Applied Rule:"));
+                panel.Controls.Add(label_factory(String.Format("{0} confidence: {1}",rule_toapply,res_conf)));
+                ThoughtLinePanel.Controls.Add(panel);
+                //
+                panel = panel_factory();
+                panel.Controls.Add(label_factory("New Facts:"));
+                foreach (Fact f in new_result) {
+
+                    f.weight = f.weight + res_conf - res_conf * f.weight;
+                    string text = f.text + "conf: " + f.weight;
+                    Color c = Color.Black;
+                    TerminalFact old_term = terminals.Where(t => t.id == f.id).FirstOrDefault();
+                    if (old_term != null) {
+                        TerminalFact tf =new TerminalFact(old_term) { weight = f.weight };                      
+                        res.Add(tf);
+                        c = Color.Green;
+                    }
+
+                    panel.Controls.Add(label_factory(text,c));
+
+
+
+                }
+                ThoughtLinePanel.Controls.Add(panel);
+
+                applyable.Remove(rule_toapply);
+                used.Add(rule_toapply);
+                
+            }
+
+            return res;
+
+
+        }
+
+
+
         private void resolve(Node n)
         {
             if (n.flag)
@@ -336,14 +418,14 @@ namespace ProductionModel
                 int cnt = 0;
                 foreach (var f in or_dict)
                 {
-                    if (init_knowledge.Contains(f.Key))
+                    if (selected_userfacts.Contains(f.Key))
                         ++cnt;
                 }
 
                 var person = panel_factory();
                 person.Controls.Add(label_factory(root.fact.text + ": ", Color.Green));
                 foreach (var val in or_dict)
-                    if (init_knowledge.Contains(val.Key))
+                    if (selected_userfacts.Contains(val.Key))
                     {
                         val.Value.flag = true;
                         foreach (Node p in val.Value.parents)
@@ -378,12 +460,12 @@ namespace ProductionModel
             return res;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Run_Clicked(object sender, EventArgs e)
         {
-            
-            if (checkBox1.Checked)
+
+            if (ForwardReasoningButton.Checked)
             {
-                init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
+                selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value >= 50).ToList();
                 List<TerminalFact> res = forward();
                 if (res.Count != 0)
                 {
@@ -429,9 +511,26 @@ namespace ProductionModel
 
                 }
             }
-            else if (checkBox2.Checked)
+            else if (FCbutton.Checked)
             {
-                init_knowledge = possible_knoweledge.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
+                //selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
+                List<TerminalFact> res = confidence_forward();
+                if (res.Count != 0)
+                {
+                    TerminalFact best = res.First();
+                    label1.Text = best.text+ "%" + (best.weight * 100).ToString("N1");
+                    pictureBox1.ImageLocation = best.img;
+                }
+                else
+                {
+                    
+                    label1.Text = "UNKNOWN";
+                    pictureBox1.ImageLocation = "https://cdn-images-1.medium.com/max/800/1*Km98PgzRp9yRYfVZeSzwzQ.png";
+                }
+            }
+            else if (BackwardReasoningButton.Checked)
+            {
+                selected_userfacts = all_userfacts.Where(f => f.cntrl.FactValueControl.Value == 1).ToList();
                 Dictionary<TerminalFact, Tuple<int, double>> res = backward();
                 if (res.Count != 0)
                 {
@@ -498,16 +597,8 @@ namespace ProductionModel
             flowLayoutPanel1.Refresh();
         }
 
-        private void checkBox1_Click(object sender, EventArgs e)
-        {
-           CheckBox c = sender as CheckBox;
-           if (c.Checked)
-            {
-                checkBox1.Checked = false;
-                checkBox2.Checked = false;
-                c.Checked = true;
-            }
-        }
+
+        
     }
 
     public class Fact
@@ -532,7 +623,7 @@ namespace ProductionModel
 
         public Fact() { }
 
-        public Fact(string _id, string _text)
+        public Fact(string _id, string _text, double w = 1.0)
         {
             id = _id.Trim();
             text = _text;
@@ -581,14 +672,16 @@ namespace ProductionModel
     class Rule
     {
         public string id;
+        public double weight = 1;
         public HashSet<Fact> condition;
         public HashSet<Fact> result;
 
         public Rule() { }
 
-        public Rule(string _id, Fact[] cond, Fact[] res)
+        public Rule(string _id, Fact[] cond, Fact[] res, double w = 1.0)
         {
             id = _id.Trim();
+            weight = w;
             condition = new HashSet<Fact>();
             foreach (var c in cond)
                 condition.Add(c);

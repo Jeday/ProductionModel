@@ -37,29 +37,33 @@
             // 
             this.FactText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.FactText.AutoSize = true;
-            this.FactText.Location = new System.Drawing.Point(3, 10);
+            this.FactText.Location = new System.Drawing.Point(4, 12);
+            this.FactText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.FactText.Name = "FactText";
-            this.FactText.Size = new System.Drawing.Size(49, 13);
+            this.FactText.Size = new System.Drawing.Size(62, 17);
             this.FactText.TabIndex = 0;
             this.FactText.Text = "FactText";
             // 
             // FactValueControl
             // 
-            this.FactValueControl.Location = new System.Drawing.Point(3, 26);
-            this.FactValueControl.Maximum = 1;
+            this.FactValueControl.LargeChange = 10;
+            this.FactValueControl.Location = new System.Drawing.Point(4, 32);
+            this.FactValueControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.FactValueControl.Maximum = 100;
             this.FactValueControl.Name = "FactValueControl";
-            this.FactValueControl.Size = new System.Drawing.Size(322, 45);
+            this.FactValueControl.Size = new System.Drawing.Size(429, 56);
             this.FactValueControl.TabIndex = 1;
-            this.FactValueControl.TickFrequency = 100;
+            this.FactValueControl.TickFrequency = 5;
             // 
             // FactControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.FactValueControl);
             this.Controls.Add(this.FactText);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FactControl";
-            this.Size = new System.Drawing.Size(327, 66);
+            this.Size = new System.Drawing.Size(436, 81);
             ((System.ComponentModel.ISupportInitialize)(this.FactValueControl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
